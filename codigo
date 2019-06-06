@@ -1,0 +1,100 @@
+#include <stdio.h> 
+#include <stdlib.h>
+#include <math.h>
+#define PONTOS 50 //Numero de nós da onda
+#define ONDAS 5 //Numero de ondas a serem geradas
+ 	
+//TAD para armazenar o valor de PI
+typedef struct{
+	double num_pi = 3.1415912;
+}valor_pi;
+
+//Módulo de resultado para cálculo da largura da onda
+double largura_onda(){	
+	valor_pi pi;
+	return(pi.num_pi*2);
+}
+
+//Prototipação dos módulos de procedimento
+void calc_onda_0(double*, double*);
+void impr_onda_0(double*);
+void calc_demais_ondas(double*, double*, double*);
+void atualizar_parametros(double*, double*, double*);
+void definir_pontos(double*, double*, double*, int i, int k);
+
+int main (){
+	
+	//Alocação de memória para os vetores
+	double *anterior,*atual,*novo; 
+	atual = (double*) malloc(PONTOS*sizeof(double));
+	anterior = (double*) malloc(PONTOS*sizeof(double));
+	novo = (double*) malloc(PONTOS*sizeof(double));
+
+	//Calculo onda zero
+	calc_onda_0(atual,anterior);			
+	//Imprimir onda zero separadamente		
+	impr_onda_0(atual);
+	//Imprimir demais ondas
+	calc_demais_ondas(anterior,atual,novo);
+	
+	//Liberação dos espaços de memória
+	free(atual);
+	free(anterior);
+	free(novo);
+}	
+
+void calc_onda_0(double *atual, double *anterior){
+	//Calculo da onda inicial
+	double x,a,larg;
+	larg = largura_onda(); //Largura da onda 
+	int k;
+	
+	for (k=0; k<PONTOS ;k++){
+	    x = (int)k / (double)(PONTOS-1); //Indice / Total de pontos -1
+	    a = (double)sin(larg * x); //Calculo do seno para a amplitude da onda sin(largura da onda*(indice/total de pontos-1)
+	    atual[k] = a; 
+	    anterior[k]=atual[k]; 
+		}
+}
+
+void impr_onda_0(double *atual){
+	int k;
+	//Impressão da onda inicial
+	for (k=0;k<PONTOS;k++){ 
+		printf("%f, ",atual[k]);
+	}
+	printf("\n");
+}
+
+void calc_demais_ondas(double *atual, double *anterior, double *novo){
+	//Calculo das demais ondas
+	int i,k;
+	for (i=0;i<ONDAS;i++){ //Gerar n ondas
+		for (k=0;k<(PONTOS);k++){
+			definir_pontos(anterior,atual,novo,i,k); //Definir os pontos das novas ondas com base no atual e anterior
+			printf("%f, ",novo[k]);
+		}
+		atualizar_parametros(anterior,atual,novo);//Atualização dos parâmetros de atual e anterior
+		printf("\n"); 
+	}		
+
+}
+
+void definir_pontos(double *atual, double *anterior, double *novo,int i, int k){
+	//Condicional para as ondas iniciarem e terminarem no ponto y=0 e passarem pela formula
+	double c = 0.918;
+	if (k==0 || k == PONTOS-1)
+		novo[k] = 0;
+	else
+		novo[k]  =  ((2*atual[k])-anterior[k]+(c * (atual[k-1])-(2 * atual[k])+atual[k+1])); //Formula para calculo dos novos pontos
+			
+}
+
+void atualizar_parametros(double *atual, double *anterior, double *novo){
+	//Atualização dos parâmetros
+	int k;
+		for (k=0;k<PONTOS;k++){ 
+		    anterior[k]=atual[k];	    
+			atual[k]=novo[k];
+		}
+}

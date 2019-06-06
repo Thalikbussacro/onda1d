@@ -1,4 +1,4 @@
-# onda1d
+# Unidimensional Wave
 Exercise presented as final work for a subject of Algorithms, without course of computer science 1st phase.
 
 Problem 4: 1D Wave Equation

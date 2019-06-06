@@ -1,0 +1,87 @@
+#include <stdio.h> 
+#include <stdlib.h>
+#include <math.h>
+#define PONTOS 50 //Numero de nós da onda
+#define ONDAS 5 //Numero de ondas a serem geradas
+
+//Calculo da largura da onda
+double largura_onda(){
+	double PI = 3.1415912;
+	return(PI*2);
+}
+
+//Prototipação das funções
+void calc_onda_0(double[PONTOS], double[PONTOS]);
+void impr_onda_0(double[PONTOS]);
+void calc_demais_ondas(double[PONTOS],double[PONTOS],double[PONTOS]);
+void atualizar_parametros(double[PONTOS],double[PONTOS],double[PONTOS]);
+void definir_pontos(double[PONTOS],double[PONTOS],double[PONTOS],int i, int k);
+
+int main (){
+	
+	double anterior[PONTOS],atual[PONTOS],novo[PONTOS];
+
+	//Calculo onda zero
+	calc_onda_0(atual,anterior);			
+	//Imprimir onda 00	separadamente		
+	impr_onda_0(atual);
+	//Imprimir demais ondas
+	calc_demais_ondas(anterior,atual,novo);
+	
+}	
+
+void calc_onda_0(double atual[PONTOS], double anterior[PONTOS]){
+
+	double x,a,larg;
+	larg = largura_onda(); //Largura da onda 
+	int k;
+	
+	for (k=0; k<PONTOS ;k++){
+	    x = (int)k / (double)(PONTOS-1); //Calculo de x
+	    a = (double)sin(larg * x); //Calculo do seno, para a amplitude da onda
+	    atual[k] = a; 
+	    anterior[k]=atual[k];
+		}
+	
+}
+
+void impr_onda_0(double atual[PONTOS]){
+	int k;
+	for (k=0;k<PONTOS;k++){ 
+		printf("%f, ",atual[k]);
+	}
+	printf("\n");
+}
+
+void calc_demais_ondas(double anterior[PONTOS],double atual[PONTOS],double novo[PONTOS]){
+	
+	int i,k;
+	for (i=0;i<ONDAS;i++){
+		for (k=0;k<(PONTOS);k++){
+			definir_pontos(anterior,atual,novo,i,k);
+			printf("%f, ",novo[k]);
+		}
+		atualizar_parametros(anterior,atual,novo);
+		printf("\n"); 
+	}		
+
+}
+
+void definir_pontos(double anterior[PONTOS],double atual[PONTOS],double novo[PONTOS],int i, int k){
+	
+	double c = 0.918;
+	if (k==0 || k == PONTOS-1)
+		novo[k] = 0;
+	else
+		novo[k]  =  ((2*atual[k])-anterior[k]+(c * (atual[k-1])-(2 * atual[k])+atual[k+1]));
+			
+}
+
+void atualizar_parametros(double anterior[PONTOS],double atual[PONTOS],double novo[PONTOS]){
+	
+	int k;
+		for (k=0;k<PONTOS;k++){ 
+		    anterior[k]=atual[k];	    
+			atual[k]=novo[k];
+		}
+}

@@ -1,10 +1,9 @@
 # onda1d
-Exercicio proposto como trabalho final para a matéria de Algoritmos, no curso de ciência da computação 1 fase.
+Exercise presented as final work for a subject of Algorithms, without course of computer science 1st phase.
 
-Problema 4: Equação de onda 1D
-Neste exemplo, a amplitude ao longo de uma “corda vibratória” uniforme é calculada após um período de tempo especificado. O cálculo envolve:
-a amplitude no eixo y
-i como o índice de posição ao longo do eixo x
-pontos de nó impostos ao longo da cadeia (corda)
-atualização da amplitude em etapas de tempo discreto.
-
+Problem 4: 1D Wave Equation
+In this example, an amplitude along a vibratory string is a specified time period. The calculation involves:
+an amplitude on the y-axis
+as the value index along the x-axis
+long-term points along the rope
+The amplitude update in discrete time steps.

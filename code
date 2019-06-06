@@ -1,87 +1,101 @@
 #include <stdio.h> 
 #include <stdlib.h>
 #include <math.h>
-#define PONTOS 50 //Numero de nós da onda
-#define ONDAS 5 //Numero de ondas a serem geradas
+#define POINTS 50 //Number of wave nodes
+#define WAVES 5 //Number of waves to be generated
+ 	
+//TAD to store the PI value
+typedef struct{
+	double num_pi = 3.1415912;
+}pi_value;
 
-//Calculo da largura da onda
-double largura_onda(){
-	double PI = 3.1415912;
-	return(PI*2);
+//Result module for waveform calculation
+double wave_width(){	
+	pi_value pi;
+	return(pi.num_pi*2);
 }
 
-//Prototipação das funções
-void calc_onda_0(double[PONTOS], double[PONTOS]);
-void impr_onda_0(double[PONTOS]);
-void calc_demais_ondas(double[PONTOS],double[PONTOS],double[PONTOS]);
-void atualizar_parametros(double[PONTOS],double[PONTOS],double[PONTOS]);
-void definir_pontos(double[PONTOS],double[PONTOS],double[PONTOS],int i, int k);
+//Prototyping of procedure modules
+void calc_wave_0(double*, double*);
+void impr_wave_0(double*);
+void calc_other_waves(double*, double*, double*);
+void update_parameters(double*, double*, double*);
+void define_points(double*, double*, double*, int i, int k);
 
 int main (){
 	
-	double anterior[PONTOS],atual[PONTOS],novo[PONTOS];
+	//Memory Allocation for Vectors
+	double *previous,*current,*_new; 
+	current = (double*) malloc(POINTS*sizeof(double));
+	previous = (double*) malloc(POINTS*sizeof(double));
+	_new = (double*) malloc(POINTS*sizeof(double));
 
-	//Calculo onda zero
-	calc_onda_0(atual,anterior);			
-	//Imprimir onda 00	separadamente		
-	impr_onda_0(atual);
-	//Imprimir demais ondas
-	calc_demais_ondas(anterior,atual,novo);
+	//Zero wave calculation
+	calc_wave_0(current,previous);			
+	//Print zero wave separately	
+	impr_wave_0(current);
+	//Print the other waves
+	calc_other_waves(previous,current,_new);
 	
+	//Release of memory spaces
+	free(current);x
+	free(previous);
+	free(_new);
 }	
 
-void calc_onda_0(double atual[PONTOS], double anterior[PONTOS]){
-
+void calc_wave_0(double *current, double *previous){
+	//Calculation of the initial wave
 	double x,a,larg;
-	larg = largura_onda(); //Largura da onda 
+	larg = wave_width(); //Wavelength
 	int k;
 	
-	for (k=0; k<PONTOS ;k++){
-	    x = (int)k / (double)(PONTOS-1); //Calculo de x
-	    a = (double)sin(larg * x); //Calculo do seno, para a amplitude da onda
-	    atual[k] = a; 
-	    anterior[k]=atual[k];
+	for (k=0; k<POINTS ;k++){
+	    x = (int)k / (double)(POINTS-1); //Index / Total of POINTS -1
+	    a = (double)sin(larg * x); //Calculation of the sine for the amplitude of the wave sin(Wavelength*(Index/ Total of POINTS-1)
+	    current[k] = a; 
+	    previous[k]=current[k]; 
 		}
-	
 }
 
-void impr_onda_0(double atual[PONTOS]){
+void impr_wave_0(double *current){
 	int k;
-	for (k=0;k<PONTOS;k++){ 
-		printf("%f, ",atual[k]);
+	//Initial wave printout
+	for (k=0;k<POINTS;k++){ 
+		printf("%f, ",current[k]);
 	}
 	printf("\n");
 }
 
-void calc_demais_ondas(double anterior[PONTOS],double atual[PONTOS],double novo[PONTOS]){
-	
+void calc_other_waves(double *current, double *previous, double *_new){
+	//Calculation of other waves
+
 	int i,k;
-	for (i=0;i<ONDAS;i++){
-		for (k=0;k<(PONTOS);k++){
-			definir_pontos(anterior,atual,novo,i,k);
-			printf("%f, ",novo[k]);
+	for (i=0;i<WAVES;i++){ //Generate n waves
+		for (k=0;k<(POINTS);k++){
+			define_points(previous,current,_new,i,k); //Set the points of new waves based on current and previous
+			printf("%f, ",_new[k]);
 		}
-		atualizar_parametros(anterior,atual,novo);
+		update_parameters(previous,current,_new);//updating current and previous parameters
 		printf("\n"); 
 	}		
 
 }
 
-void definir_pontos(double anterior[PONTOS],double atual[PONTOS],double novo[PONTOS],int i, int k){
-	
+void define_points(double *current, double *previous, double *_new,int i, int k){
+	// Conditional for the waves to start and end at point y = 0 and go through the formula
 	double c = 0.918;
-	if (k==0 || k == PONTOS-1)
-		novo[k] = 0;
+	if (k==0 || k == POINTS-1)
+		_new[k] = 0;
 	else
-		novo[k]  =  ((2*atual[k])-anterior[k]+(c * (atual[k-1])-(2 * atual[k])+atual[k+1]));
+		_new[k]  =  ((2*current[k])-previous[k]+(c * (current[k-1])-(2 * current[k])+current[k+1])); //Formula for calculating new points
 			
 }
 
-void atualizar_parametros(double anterior[PONTOS],double atual[PONTOS],double novo[PONTOS]){
-	
+void update_parameters(double *current, double *previous, double *_new){
+	//updating current and previous parameters
 	int k;
-		for (k=0;k<PONTOS;k++){ 
-		    anterior[k]=atual[k];	    
-			atual[k]=novo[k];
+		for (k=0;k<POINTS;k++){ 
+		    previous[k]=current[k];	    
+			current[k]=_new[k];
 		}
 }

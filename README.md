@@ -1,9 +1,9 @@
-# Unidimensional Wave
-Exercise presented as final work for a subject of Algorithms, without course of computer science 1st phase.
+# ONDA UNIDIMENSIONAL (x,y)
+Exercício apresentado como trabalho final para uma disciplina de Algoritmos, no curso de ciencia da computacao 1ª fase.
 
-Problem 4: 1D Wave Equation
-In this example, an amplitude along a vibratory string is a specified time period. The calculation involves:
-an amplitude on the y-axis
-as the value index along the x-axis
-long-term points along the rope
-The amplitude update in discrete time steps.
+Equação de Onda 1D
+Neste exemplo, uma amplitude ao longo de uma corda vibratória é um período de tempo especificado. O cálculo envolve:
+A amplitude no eixo y
+O índice de valor ao longo do eixo x
+Pontos de longo prazo ao longo da corda (resolucao da onda)
+A atualização da amplitude em passos de tempo discretos.
